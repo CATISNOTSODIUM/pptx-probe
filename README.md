@@ -18,10 +18,15 @@ make
 ./pptx-probe -o output example/example1.pptx 
 ```
 
+For more details, please refer to [this guide](./Guide.md).
+
 ### Example
 | | |
 |:---:|:---:|
 | ![alt text](figure/example_pic_1.png) | ![alt text](figure/example_pic_2.png) |
+
+
+
 
 ```cpp
 // Under cat.cpp
