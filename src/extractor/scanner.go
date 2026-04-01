@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"ppt-probe/src/models"
+	"ppt-probe/src/painter"
 	"regexp"
 	"strconv"
 	"strings"
@@ -192,6 +193,7 @@ func Parse(node models.Node, output string) {
 		cur := id
 		isVisited := make(map[string]bool)
 		for {
+			painter.PaintCpp(IDToContent[cur])
 			_, err := f.WriteString(IDToContent[cur])
 			if err != nil {
 				log.Fatalln(err.Error())
