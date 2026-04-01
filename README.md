@@ -9,7 +9,8 @@ In academic settings (like **NUS CS2030S** labs), code is often shown on slides.
 
 ### Checklist
 
-- [ ] Add `watch` command to automatically update the code when saving the powerpoint file.
+- [x] Add `watch` command to automatically update the code when saving the powerpoint file.
+- [ ] Perform syntax hightlighting when saved.
 
 ### Quick start
 
