@@ -1,16 +1,17 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"os"
-	"ppt-probe/src/extractor"
-	"ppt-probe/src/models"
+	"ppt-probe/src/watcher"
 )
 
 func main() {
 	outputDir := flag.String("o", "output", "Directory to save extracted code")
 	help := flag.Bool("h", false, "Show help")
+	isWatch := flag.Bool("w", false, "watch for changes")
 
 	flag.Parse()
 
@@ -23,22 +24,12 @@ func main() {
 	}
 
 	targetFile := args[0]
+
+	watcher.Execute(targetFile, *outputDir)
 	fmt.Printf("Probing: %s\nSaving to: %s\n", targetFile, *outputDir)
 
-	ppt, err := models.ReadPowerPoint(targetFile)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error: Could not read PPTX: %v\n", err)
-		os.Exit(1)
-	}
-
-	for i, bytes := range ppt.Slides {
-		xmlNode, err := models.Decode(bytes)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Warning: Failed to decode slide %s: %v\n", i, err)
-			continue
-		}
-
-		extractor.Parse(*xmlNode, *outputDir)
+	if *isWatch {
+		watcher.WatchFile(context.Background(), targetFile, *outputDir)
 	}
 
 	fmt.Println("Done!")

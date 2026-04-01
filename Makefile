@@ -3,6 +3,8 @@ BINARY_NAME=pptx-probe
 GO_FILES=$(shell find . -name "*.go")
 OUTPUT_DIR=output
 
+GOFMT ?= gofmt "-s"
+
 # Default target: build the binary
 all: build
 
@@ -27,7 +29,8 @@ clean:
 
 ## fmt: Format all Go files (important for clean code)
 fmt:
-	go fmt ./...
+	$(GOFMT) -w $(GO_FILES)
+
 
 ## help: Show this help message
 help:
