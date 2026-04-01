@@ -4,8 +4,11 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"log"
 	"os"
+	"os/signal"
 	"ppt-probe/src/watcher"
+	"syscall"
 )
 
 func main() {
@@ -25,12 +28,18 @@ func main() {
 
 	targetFile := args[0]
 
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer stop()
+
 	watcher.Execute(targetFile, *outputDir)
-	fmt.Printf("Probing: %s\nSaving to: %s\n", targetFile, *outputDir)
+	log.Printf("Probing: %s\nSaving to: %s\n", targetFile, *outputDir)
 
 	if *isWatch {
-		watcher.WatchFile(context.Background(), targetFile, *outputDir)
+		err := watcher.WatchFile(ctx, targetFile, *outputDir)
+		if err != nil {
+			log.Fatalln(err)
+		}
 	}
 
-	fmt.Println("Done!")
+	log.Println("Done!")
 }

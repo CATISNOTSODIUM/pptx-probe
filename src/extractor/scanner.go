@@ -1,7 +1,6 @@
 package extractor
 
 import (
-	"fmt"
 	"html"
 	"log"
 	"os"
@@ -65,7 +64,7 @@ func ExtractLevel(node models.Node) int {
 	} else {
 		parsed, err := strconv.Atoi(paragraphs[0].Level)
 		if err != nil {
-			fmt.Fprintln(os.Stderr, "Error try to parse level "+paragraphs[0].Level)
+			log.Fatalf("Error try to parse level %s", paragraphs[0].Level)
 			return 0
 		} else {
 			return parsed
